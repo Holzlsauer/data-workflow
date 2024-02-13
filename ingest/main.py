@@ -1,9 +1,11 @@
+from time import sleep
 import requests
 import random
 
 from datetime import datetime
 
 from models.user import User
+from kafka.utils import KafkaProducer
 
 
 def extract_user_information(data: dict[str, str]) -> User:
@@ -41,7 +43,7 @@ def fetch_data() -> list[User]:
         list[User]: List of User objects containing user information.
     """
     response = requests.get(
-        f'https://randomuser.me/api/?results={random.randint(1000, 5000)}&nat=BR'
+        f'https://randomuser.me/api/?results={random.randint(100, 200)}&nat=BR'
     )
 
     if not response.status_code == 200:
@@ -56,3 +58,7 @@ def fetch_data() -> list[User]:
 if __name__ == '__main__':
     users = fetch_data()
     streaming_data = [user.__dict__ for user in users]
+    producer = KafkaProducer()
+    for data in streaming_data:
+        producer.produce(str(data))
+        sleep(random.randint(1,2))
