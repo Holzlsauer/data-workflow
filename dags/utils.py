@@ -20,7 +20,7 @@ class KafkaProducer:
         })
         self._topic = topic
 
-    def _acked(self, err: Any, msg: Message) -> None: # type: ignore
+    def _acked(self, err, msg: Message) -> None: # type: ignore
         """
         Callback method for handling message delivery status.
 

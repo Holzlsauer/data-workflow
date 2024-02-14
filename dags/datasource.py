@@ -2,7 +2,7 @@ import requests
 import random
 from datetime import datetime
 from models.user import User
-from kafka.utils import KafkaProducer
+from utils import KafkaProducer
 from typing import Dict, List
 
 
