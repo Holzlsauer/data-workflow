@@ -1,14 +1,12 @@
-from time import sleep
 import requests
 import random
-
 from datetime import datetime
-
 from models.user import User
 from kafka.utils import KafkaProducer
+from typing import Dict, List
 
 
-def extract_user_information(data: dict[str, str]) -> User:
+def extract_user_information(data: Dict[str, str]) -> User:
     """
     Extracts user information from the provided data.
 
@@ -32,7 +30,7 @@ def extract_user_information(data: dict[str, str]) -> User:
     )
 
 
-def fetch_data() -> list[User]:
+def fetch_data() -> List[User]:
     """
     Fetches user data from the randomuser.me API.
 
@@ -43,7 +41,7 @@ def fetch_data() -> list[User]:
         list[User]: List of User objects containing user information.
     """
     response = requests.get(
-        f'https://randomuser.me/api/?results={random.randint(100, 200)}&nat=BR'
+        f'https://randomuser.me/api/?results={random.randint(10, 20)}&nat=BR'
     )
 
     if not response.status_code == 200:
@@ -55,10 +53,20 @@ def fetch_data() -> list[User]:
     data = [extract_user_information(user) for user in user_data]
     return data
 
-if __name__ == '__main__':
+def send_data() -> None:
+    """
+    Fetches user data and sends it to a Kafka topic.
+
+    Uses KafkaProducer to produce messages for each user's data.
+
+    Returns:
+        None
+    """
     users = fetch_data()
     streaming_data = [user.__dict__ for user in users]
     producer = KafkaProducer()
     for data in streaming_data:
         producer.produce(str(data))
-        sleep(random.randint(1,2))
+
+if __name__ == '__main__':
+    send_data()
