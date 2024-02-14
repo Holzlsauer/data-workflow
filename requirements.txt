@@ -1,6 +1,7 @@
 annotated-types==0.6.0
 certifi==2024.2.2
 charset-normalizer==3.3.2
+confluent-kafka==2.3.0
 idna==3.6
 numpy==1.26.4
 pandas==2.2.0
