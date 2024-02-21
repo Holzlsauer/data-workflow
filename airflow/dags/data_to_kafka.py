@@ -17,9 +17,9 @@ with DAG('user_data', default_args=default_args, schedule_interval='*/5 * * * *'
 
 
     data_stream_task = PythonOperator(
-    task_id='kafka_data_stream',
-    python_callable=send_data,
-    dag=dag,
+        task_id='kafka_data_stream',
+        python_callable=send_data,
+        dag=dag,
     )
 
     data_stream_task # type: ignore

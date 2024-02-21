@@ -1,9 +1,12 @@
+import logging
 import requests
 import random
 from datetime import datetime
 from models.user import User
 from utils import KafkaProducer
 from typing import Dict, List
+
+logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s', level=logging.DEBUG)
 
 
 def extract_user_information(data: Dict[str, str]) -> User:
@@ -62,6 +65,7 @@ def send_data() -> None:
     Returns:
         None
     """
+    logging.info('----- Start DAG -----')
     users = fetch_data()
     streaming_data = [user.__dict__ for user in users]
     producer = KafkaProducer()

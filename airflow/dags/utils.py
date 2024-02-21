@@ -15,7 +15,7 @@ class KafkaProducer:
 
     def __init__(self, topic: str = 'default') -> None:
         self._producer = Producer({ # type: ignore
-            'bootstrap.servers': 'localhost:9092',
+            'bootstrap.servers': 'kafka:19092',
             'client.id': socket.gethostname()
         })
         self._topic = topic
@@ -32,7 +32,7 @@ class KafkaProducer:
         if err is not None:
             logging.error("Failed to deliver message: %s: %s", str(msg), str(err)) # type: ignore
         else:
-            logging.debug("Message produced: %s", str(msg.value())) # type: ignore
+            logging.info("Message produced: %s", str(msg.value())) # type: ignore
 
     def produce(self, message: str) -> None:
         """
@@ -41,7 +41,7 @@ class KafkaProducer:
         Args:
             message (str): The message content to send.
         """
-
+        logging.info('Sending data to kafka: {}'.format(message))
         self._producer.produce( # type: ignore
             self._topic, value=message, callback=self._acked # type: ignore
         )
