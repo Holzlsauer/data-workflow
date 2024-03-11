@@ -1,3 +1,4 @@
+import json
 import logging
 import requests
 import random
@@ -28,8 +29,8 @@ def extract_user_information(data: Dict[str, str]) -> User:
         nat=data['nat'],
         cellphone=data['cell'],
         picture=data['picture']['large'],  # type: ignore
-        birthday=datetime.strptime(data['dob']['date'], date_format).date(),  # type: ignore
-        registered=datetime.strptime(data['registered']['date'], date_format)  # type: ignore
+        birthday=datetime.strptime(data['dob']['date'], date_format).strftime('%Y-%m-%d'),  # type: ignore
+        registered=float(datetime.strptime(data['registered']['date'], date_format).timestamp() * 1000) # type: ignore
     )
 
 
@@ -70,6 +71,7 @@ def send_data() -> None:
     streaming_data = [user.__dict__ for user in users]
     producer = KafkaProducer()
     for data in streaming_data:
+        print(type(data))
         producer.produce(str(data))
 
 if __name__ == '__main__':

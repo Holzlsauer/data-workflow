@@ -41,7 +41,6 @@ class KafkaProducer:
         Args:
             message (str): The message content to send.
         """
-        logging.info('Sending data to kafka: {}'.format(message))
         self._producer.produce( # type: ignore
             self._topic, value=message, callback=self._acked # type: ignore
         )

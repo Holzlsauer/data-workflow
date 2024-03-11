@@ -1,4 +1,3 @@
-from datetime import date, datetime
 from pydantic import BaseModel
 
 class User(BaseModel):
@@ -9,5 +8,5 @@ class User(BaseModel):
     nat: str
     cellphone: str
     picture: str
-    birthday: date
-    registered: datetime
+    birthday: str
+    registered: float
