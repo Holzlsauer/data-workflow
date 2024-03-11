@@ -1,0 +1,21 @@
+version: '3.9'
+
+services:
+  spark:
+    container_name: spark
+    image: bitnami/spark:latest
+    command: >
+      bash -c "bin/spark-class org.apache.spark.deploy.master.Master"
+    ports:
+      - "9090:8080"
+    environment:
+      SPARK_MODE: master
+      MONGODB_URI: ${MONGODB_URI}
+    volumes:
+      - ./scripts:/opt/bitnami/spark/scripts
+    networks:
+      - airflow-kafka
+
+networks:
+  airflow-kafka:
+    external: true
